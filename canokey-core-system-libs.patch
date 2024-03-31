@@ -1,0 +1,23 @@
+--- canokey-core-2.0.1/CMakeLists.txt.orig	2023-11-04 17:29:24.000000000 +0100
++++ canokey-core-2.0.1/CMakeLists.txt	2024-03-27 20:19:01.211323537 +0100
+@@ -28,9 +28,8 @@ if (DEFINED USBD_PRODUCT_STRING)
+     add_definitions(-DUSBD_PRODUCT_STRING="${USBD_PRODUCT_STRING}")
+ endif ()
+ 
+-file(GLOB_RECURSE SRC src/*.c applets/*.c interfaces/*.c
+-        littlefs/lfs.c littlefs/lfs_util.c
+-        tinycbor/src/cborencoder.c tinycbor/src/cborparser.c)
++file(GLOB_RECURSE SRC src/*.c applets/*.c interfaces/*.c)
++include_directories("/usr/include/tinycbor")
+ add_library(canokey-core ${SRC})
+ 
+ if (ENABLE_TESTS)
+@@ -55,7 +54,7 @@ target_include_directories(canokey-core
+         interfaces/USB/class/ctaphid
+         interfaces/USB/class/kbdhid
+         interfaces/USB/class/webusb)
+-target_link_libraries(canokey-core canokey-crypto)
++target_link_libraries(canokey-core canokey-crypto lfs tinycbor)
+ 
+ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+ 
